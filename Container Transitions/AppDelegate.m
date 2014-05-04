@@ -9,8 +9,9 @@
 #import "AppDelegate.h"
 #import "ContainerViewController.h"
 #import "ChildViewController.h"
+#import "Animator.h"
 
-@interface AppDelegate ()
+@interface AppDelegate () <ContainerViewControllerDelegate>
 @property (nonatomic, strong) UIWindow *privateWindow;
 @end
 
@@ -25,12 +26,19 @@
 	return YES;
 }
 
+#pragma mark - ContainerViewControllerDelegate Protocol
+
+- (id<UIViewControllerAnimatedTransitioning>)containerViewController:(ContainerViewController *)containerViewController animationControllerForTransitionFromViewController:(UIViewController *)fromViewController toViewController:(UIViewController *)toViewController {
+	return [[Animator alloc] init];
+}
+
 #pragma mark - Private Methods
 
 - (UIViewController *)_configuredRootViewController {
 	
 	NSArray *childViewControllers = [self _configuredChildViewControllers];
 	ContainerViewController *rootViewController = [[ContainerViewController alloc] initWithViewControllers:childViewControllers];
+//	rootViewController.delegate = self;
 	
 	return rootViewController;
 }
